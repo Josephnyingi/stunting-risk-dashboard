@@ -154,8 +154,8 @@ def generate_sector_pdf(sector_name: str, district_name: str, df_sector: pd.Data
         KIN["rank"], KIN["anon_id"],
         f"{KIN['score']}\n(0–1)",
         KIN["children"],
-        f"{KIN['drivers']}\nImpamvu 3",
-        f"{KIN['intervention']}\nUbufasha",
+        "Top-3 Drivers\n(Impamvu 3)",
+        "Intervention\n(Ubufasha)",
     ]
     col_w = [0.8*cm, 1.8*cm, 1.8*cm, 1.3*cm, 6.2*cm, 5.4*cm]
     table_data = [header_row]
@@ -169,7 +169,7 @@ def generate_sector_pdf(sector_name: str, district_name: str, df_sector: pd.Data
         interv = row.get("intervention", "—")
         score  = float(row["risk_score"])
         table_data.append([
-            str(i + 1), anon, f"{score:.2f}",
+            str(i + 1), anon, f"{score:.3f}",
             str(int(row["children_under5"])),
             drvrs_fmt, interv,
         ])

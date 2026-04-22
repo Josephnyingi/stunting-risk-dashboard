@@ -15,6 +15,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, classification_report
@@ -90,7 +91,10 @@ class RiskScorer:
     """
 
     def __init__(self):
-        self.lr      = LogisticRegression(C=1.0, max_iter=500, random_state=42)
+        self.lr      = CalibratedClassifierCV(
+                           LogisticRegression(C=1.0, max_iter=500, random_state=42),
+                           cv=5, method="sigmoid"
+                       )
         self.scaler  = StandardScaler()
         self.fitted  = False
 
