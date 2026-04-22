@@ -46,11 +46,11 @@ with st.sidebar:
     show_points      = st.toggle("Show household points on map", value=True)
 
     st.divider()
-    st.caption("Model performance (gold labels, n=300)")
-    st.metric("AUC-ROC",   f"{metrics['auc_roc']:.3f}")
-    st.metric("Precision", f"{metrics['precision']:.3f}")
-    st.metric("Recall",    f"{metrics['recall']:.3f}")
-    st.metric("F1",        f"{metrics['f1']:.3f}")
+    st.caption(f"Model performance · train n={metrics['n_train']} · test n={metrics['n_test']}")
+    st.metric("AUC-ROC",   f"{metrics['auc_roc']:.4f}")
+    st.metric("Precision", f"{metrics['precision']:.4f}")
+    st.metric("Recall",    f"{metrics['recall']:.4f}")
+    st.metric("F1",        f"{metrics['f1']:.4f}")
 
 def _color_risk(val, vmin, vmax):
     t = (val - vmin) / (vmax - vmin) if vmax > vmin else 0
