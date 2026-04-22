@@ -1,0 +1,16 @@
+district,sector,n_households,avg_risk_score,pct_high_risk
+Gasabo,Kacyiru,215,0.4584,0.4372
+Gasabo,Kimironko,234,0.4303,0.4145
+Gasabo,Remera,201,0.4395,0.4179
+Kicukiro,Gahanga,186,0.4947,0.4785
+Kicukiro,Masaka,175,0.3921,0.3543
+Kicukiro,Niboye,189,0.4952,0.4974
+Musanze,Kinigi,95,0.7243,0.7158
+Musanze,Muhoza,107,0.8202,0.8318
+Musanze,Shingiro,98,0.788,0.7755
+Nyanza,Busasamana,140,0.8553,0.8643
+Nyanza,Cyabakamyi,117,0.8594,0.8889
+Nyanza,Kibilizi,143,0.9171,0.9371
+Nyarugenge,Gitega,197,0.4036,0.3959
+Nyarugenge,Kigali,198,0.3542,0.3333
+Nyarugenge,Nyarugenge,205,0.4022,0.3854
