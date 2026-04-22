@@ -52,6 +52,12 @@ with st.sidebar:
     st.metric("Recall",    f"{metrics['recall']:.3f}")
     st.metric("F1",        f"{metrics['f1']:.3f}")
 
+def _color_risk(val, vmin, vmax):
+    t = (val - vmin) / (vmax - vmin) if vmax > vmin else 0
+    r = int(255 * min(1, t * 2))
+    g = int(255 * min(1, (1 - t) * 2))
+    return f"background-color: rgb({r},{g},0); color: {'#fff' if t > 0.6 else '#000'}"
+
 # ── Filter ───────────────────────────────────────────────────────────────────
 filtered  = hh[hh["district"].isin(sel_districts)]
 at_risk   = filtered[filtered["risk_score"] >= risk_threshold]
@@ -145,12 +151,6 @@ with tab_map:
 # ═══════════════ TAB 2 : SECTOR ANALYSIS ════════════════════════════════════
 with tab_sector:
     st.subheader("Sector-level risk summary")
-    def _color_risk(val, vmin, vmax):
-        t = (val - vmin) / (vmax - vmin) if vmax > vmin else 0
-        r = int(255 * min(1, t * 2))
-        g = int(255 * min(1, (1 - t) * 2))
-        return f"background-color: rgb({r},{g},0); color: {'#fff' if t > 0.6 else '#000'}"
-
     _df = sec_filt.sort_values("pct_high_risk", ascending=False)
     _pmin, _pmax = _df["pct_high_risk"].min(), _df["pct_high_risk"].max()
     _smin, _smax = _df["avg_risk_score"].min(), _df["avg_risk_score"].max()

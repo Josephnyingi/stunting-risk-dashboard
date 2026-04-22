@@ -12,8 +12,7 @@
 
 ```bash
 pip install -r requirements.txt
-python generate_data.py && python risk_scorer.py && python export_printable.py
-streamlit run dashboard.py
+python generate_data.py && python risk_scorer.py && python export_printable.py && streamlit run dashboard.py
 ```
 
 > All scripts run CPU-only. Dashboard renders in < 3 s on Colab.

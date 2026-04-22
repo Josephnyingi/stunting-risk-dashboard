@@ -15,6 +15,7 @@ import joblib
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from typing import Optional
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -162,7 +163,7 @@ class RiskScorer:
 
 
 # ── Module-level singleton (lazy-loaded for `from risk_scorer import score`) ─
-_scorer: RiskScorer | None = None
+_scorer: Optional["RiskScorer"] = None
 
 def score(household: pd.Series) -> float:
     """
