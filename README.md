@@ -161,7 +161,7 @@ The dashboard requires internet only once per month to refresh scores. After tha
 
 ## 4-minute video
 
-> [Watch 4-minute walkthrough video](https://www.tella.tv/video/stunting-risk-video-1-7zi4)
+> [Watch 4-minute walkthrough video](https://youtu.be/znyDiG5o8ow)
 
 Segments: on-camera intro (0:00–0:30) · risk_scorer.py walkthrough (0:30–1:30)
 · dashboard live demo (1:30–2:30) · A4 PDF walkthrough (2:30–3:30)
