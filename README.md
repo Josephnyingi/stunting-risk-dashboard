@@ -44,17 +44,20 @@ streamlit run dashboard.py
 
 ## Model performance
 
-| Metric    | Value |
-|-----------|-------|
-| AUC-ROC   | ~0.91 |
-| Precision | ~0.87 |
-| Recall    | ~0.85 |
-| F1        | ~0.86 |
-| N train   | 300   |
+| Metric    | Value  |
+|-----------|--------|
+| AUC-ROC   | 0.935  |
+| Precision | 0.839  |
+| Recall    | 0.867  |
+| F1        | 0.853  |
+| N train   | 240    |
+| N test    | 60     |
 
-> Logistic regression on 5 features: water source, sanitation tier, income band,
-> meal frequency, children under 5. Features match the DHS stunting predictors
-> identified in Rwanda DHS 2019–20 (NISR/ICF 2021).
+> Metrics evaluated on a **held-out 20% test set** (stratified split, never seen
+> during training). Logistic regression with Platt scaling on 5 features: water
+> source, sanitation tier, income band, meal frequency, children under 5.
+> Features match the DHS stunting predictors identified in Rwanda DHS 2019–20
+> (NISR/ICF 2021).
 
 **Biggest driver: water source quality** — the single feature with the highest
 model weight (0.30). Households on unprotected wells or river water carry

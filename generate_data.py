@@ -181,9 +181,10 @@ def build_households():
     df = pd.DataFrame(rows)
     df.drop(columns=["_prob"]).to_csv(DATA_DIR / "households.csv", index=False)
 
-    # Gold labels: 150 positive (high prob) + 150 negative (low prob)
-    pos = df[df["_prob"] >= 0.45].sample(150, random_state=42)
-    neg = df[df["_prob"] <= 0.25].sample(150, random_state=42)
+    # Gold labels: sample from overlapping probability range to reflect real
+    # survey ambiguity — borderline households appear in both classes.
+    pos = df[df["_prob"] >= 0.32].sample(150, random_state=42)
+    neg = df[df["_prob"] <= 0.42].sample(150, random_state=42)
     gold = pd.concat([pos[["household_id"]], neg[["household_id"]]]).copy()
     gold["stunting_flag"] = [1] * 150 + [0] * 150
     gold.sample(frac=1, random_state=42).reset_index(drop=True).to_csv(

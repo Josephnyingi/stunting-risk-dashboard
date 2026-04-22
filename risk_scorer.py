@@ -17,6 +17,7 @@ import pandas as pd
 from pathlib import Path
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import roc_auc_score, classification_report
 
@@ -103,21 +104,30 @@ class RiskScorer:
         X = np.vstack(merged.apply(featurize, axis=1))
         y = merged["stunting_flag"].values
 
-        X_sc = self.scaler.fit_transform(X)
-        self.lr.fit(X_sc, y)
+        # 80/20 stratified split — metrics evaluated on held-out test set
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.20, random_state=42, stratify=y
+        )
+
+        X_train_sc = self.scaler.fit_transform(X_train)
+        X_test_sc  = self.scaler.transform(X_test)
+
+        self.lr.fit(X_train_sc, y_train)
         self.fitted = True
 
-        probs = self.lr.predict_proba(X_sc)[:, 1]
+        # Honest metrics on held-out test set
+        probs = self.lr.predict_proba(X_test_sc)[:, 1]
         preds = (probs >= 0.50).astype(int)
-        auc   = roc_auc_score(y, probs)
-        rep   = classification_report(y, preds, output_dict=True)
+        auc   = roc_auc_score(y_test, probs)
+        rep   = classification_report(y_test, preds, output_dict=True)
 
         metrics = {
             "auc_roc":   round(auc, 4),
             "precision": round(rep["1"]["precision"], 4),
             "recall":    round(rep["1"]["recall"], 4),
             "f1":        round(rep["1"]["f1-score"], 4),
-            "n_train":   int(len(y)),
+            "n_train":   int(len(X_train)),
+            "n_test":    int(len(X_test)),
         }
         return metrics
 
