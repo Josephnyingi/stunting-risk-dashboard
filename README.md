@@ -46,9 +46,9 @@ python generate_data.py && python risk_scorer.py && python export_printable.py &
 | Metric    | Value  |
 |-----------|--------|
 | AUC-ROC   | 0.935  |
-| Precision | 0.839  |
-| Recall    | 0.867  |
-| F1        | 0.853  |
+| Precision | 0.8387 |
+| Recall    | 0.8667 |
+| F1        | 0.8525 |
 | N train   | 240    |
 | N test    | 60     |
 
