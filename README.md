@@ -144,6 +144,19 @@ Each high-risk household row includes a one-line action:
 
 ---
 
+## Key design decisions
+
+**1. Threshold set at 0.50, not optimised for recall.**
+A higher-recall threshold would flag more households as high-risk, but in a monthly paper workflow where a village chief visits households personally, over-flagging erodes community trust faster than missing a borderline case. 0.50 (the LR probability midpoint) keeps the list actionable and credible.
+
+**2. Privacy-by-design anonymisation.**
+Printed sheets identify households only by a 6-character code (e.g. `GIT-03`) generated with a monthly salt stored exclusively at the district health office. The village chief who receives the sheet cannot reverse-map any code to a family name — protecting household privacy while still enabling targeted follow-up by the sector health worker who holds the key.
+
+**3. Offline-first, paper as the primary artefact.**
+The dashboard requires internet only once per month to refresh scores. After that, the 15 printed A4 sheets are the sole working artefact — no laptop, no connectivity, no smartphone required for community health workers or village chiefs. This matches the real operational context of Rwanda's Umudugudu system.
+
+---
+
 ## 4-minute video
 
 > [VIDEO LINK — paste YouTube/Vimeo/Drive URL here]
