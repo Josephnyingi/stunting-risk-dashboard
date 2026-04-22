@@ -46,7 +46,9 @@ with st.sidebar:
     show_points      = st.toggle("Show household points on map", value=True)
 
     st.divider()
-    st.caption(f"Model performance · train n={metrics['n_train']} · test n={metrics['n_test']}")
+    n_train = metrics.get("n_train", "—")
+    n_test  = metrics.get("n_test",  "—")
+    st.caption(f"Model performance · train n={n_train} · test n={n_test}")
     st.metric("AUC-ROC",   f"{metrics['auc_roc']:.4f}")
     st.metric("Precision", f"{metrics['precision']:.4f}")
     st.metric("Recall",    f"{metrics['recall']:.4f}")
