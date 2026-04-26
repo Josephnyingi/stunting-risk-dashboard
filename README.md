@@ -17,6 +17,39 @@
 
 ---
 
+## ✨ Three Innovations (beyond baseline)
+
+> These features are live in the [interactive dashboard](https://huggingface.co/spaces/Nyingi101/stunting-risk-heatmap) and in the PDF outputs in `printable/`.
+
+### 1 · Counterfactual What-If Simulator (Tab 5 of the dashboard)
+
+Policy planners can run four interventions — **piped water for all**, **improved sanitation for all**, **income uplift for high-risk**, **extra daily meal for high-risk** — and instantly see how many households graduate out of high-risk:
+
+| Intervention | Cost/HH | Simulated effect (example — Kibilizi) |
+| --- | --- | --- |
+| 💧 Provide piped water to all | $150 | −16 pp high-risk rate |
+| 🚽 Upgrade sanitation to improved | $80 | −12 pp high-risk rate |
+| 💰 Income support (+1 band, high-risk only) | $50 | −6 pp high-risk rate |
+| 🍽 Nutrition: +1 meal/day (high-risk only) | $30 | −4 pp high-risk rate |
+
+The simulator modifies the raw household feature DataFrame, passes it back through the loaded logistic-regression model (`scorer.pkl`), and displays a **before/after bar chart**, a **KPI row** (households graduated, risk reduction), and a **graduation table** of households that cross the 0.50 threshold. Counterfactual rescoring is live — no pre-computed lookup table.
+
+### 2 · QR Codes on Printable A4 Sector PDFs
+
+Every sector PDF (`printable/sector_<Name>.pdf`) now embeds a QR code linking directly to the live dashboard filtered to that sector:
+
+```
+https://huggingface.co/spaces/Nyingi101/stunting-risk-heatmap?sector=Kibilizi
+```
+
+A village chief without a laptop can hand the sheet to any smartphone user and immediately open the interactive version. Generated with the `qrcode` library, embedded via ReportLab `ImageReader` — no external service, fully offline-generatable.
+
+### 3 · Offline Self-Contained HTML Export (Tab 1 of the dashboard)
+
+The **Download offline map** button in Tab 1 produces a single `.html` file (~2 MB) that contains the full choropleth map, KPI summary boxes, a sector risk table, and the top-100 flagged households — with **zero internet dependency** at render time. Plotly JS is bundled via CDN tag. A district officer can email this file to a colleague with no Streamlit, no Python, and no HuggingFace access required.
+
+---
+
 ## Problem Statement
 
 Childhood stunting — defined as height-for-age z-score below −2 SD — affects approximately **33% of Rwandan children under 5** (NISR DHS 2019–20). Stunting is largely irreversible after age 2 and causes life-long cognitive and physical impairment.
