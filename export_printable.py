@@ -7,12 +7,15 @@ and annotation/escalation block for paper workflow.
 
 Run: python export_printable.py
 """
+import io
 from datetime import date
 from pathlib import Path
 
 import pandas as pd
+import qrcode
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.utils import ImageReader
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
@@ -58,6 +61,20 @@ RISK_COLORS = {
     "low":      colors.HexColor("#4a7c59"),
 }
 HEADER_RED = colors.HexColor("#8b0000")
+SPACE_URL  = "https://huggingface.co/spaces/Nyingi101/stunting-risk-heatmap"
+
+
+def make_qr_image(url: str) -> ImageReader:
+    """Return a ReportLab-compatible ImageReader of a QR code for the given URL."""
+    qr = qrcode.QRCode(version=2, box_size=4, border=2,
+                       error_correction=qrcode.constants.ERROR_CORRECT_M)
+    qr.add_data(url)
+    qr.make(fit=True)
+    img = qr.make_image(fill_color="black", back_color="white")
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+    return ImageReader(buf)
 
 
 def tier(score: float) -> str:
@@ -196,8 +213,30 @@ def generate_sector_pdf(sector_name: str, district_name: str, df_sector: pd.Data
     tbl.setStyle(TableStyle(tbl_style))
     story.append(tbl)
 
+    # ── QR CODE ──────────────────────────────────────────────────────────────
+    story.append(Spacer(1, 0.30*cm))
+    qr_url = f"{SPACE_URL}?sector={sector_name.replace(' ', '+')}"
+    qr_img = make_qr_image(qr_url)
+
+    qr_table = Table(
+        [[qr_img, Paragraph(
+            f"<b>Scan to open live dashboard</b><br/>"
+            f"Sector: {sector_name}<br/>"
+            f"<font color='grey'>{qr_url[:55]}…</font>",
+            S["small"]
+        )]],
+        colWidths=[2.8*cm, 14.0*cm],
+    )
+    qr_table.setStyle(TableStyle([
+        ("VALIGN",  (0, 0), (-1, -1), "MIDDLE"),
+        ("PADDING", (0, 0), (-1, -1), 4),
+        ("BOX",     (0, 0), (-1, -1), 0.5, colors.lightgrey),
+        ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f9f9f9")),
+    ]))
+    story.append(qr_table)
+
     # ── ANNOTATION / ESCALATION BLOCK ────────────────────────────────────────
-    story.append(Spacer(1, 0.45*cm))
+    story.append(Spacer(1, 0.35*cm))
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.lightgrey))
     story.append(Spacer(1, 0.10*cm))
     for line in [
